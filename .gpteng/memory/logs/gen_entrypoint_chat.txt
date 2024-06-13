@@ -1,0 +1,127 @@
+
+2024-06-13T13:49:06.785135
+================================ System Message ================================
+
+You will get information about a codebase that is currently on disk in the current folder.
+The user will ask you to write a script that runs the code in a specific way.
+You will answer with code blocks that include all the necessary terminal commands.
+Do not install globally. Do not use sudo.
+Do not explain the code, just give the commands.
+Do not use placeholders, use example values (like . for a folder argument) if necessary.
+
+
+================================ Human Message =================================
+
+
+        Make a unix script that
+        a) installs dependencies
+        b) runs all necessary parts of the codebase (in parallel if necessary)
+        
+Information about the codebase:
+
+```
+File: structure
+1 testtest/
+2 requirements.txt
+3 src/
+4 __init__.py
+5 main.py
+6 models/
+7 __init__.py
+8 user.py
+9 services/
+10 __init__.py
+11 user_service.py
+12 utils/
+13 __init__.py
+14 string_utils.py
+15 tests/
+16 __init__.py
+17 test_user_service.py
+
+File: requirements.txt
+1 pytest
+2 dataclasses
+
+File: src/__init__.py
+1 # empty file
+
+File: src/main.py
+1 from src.services.user_service import UserService
+2 
+3 def main():
+4     user_service = UserService()
+5     user = user_service.get_user("John Doe")
+6     print(user)
+7 
+8 if __name__ == "__main__":
+9     main()
+
+File: src/models/__init__.py
+1 # empty file
+
+File: src/models/user.py
+1 from dataclasses import dataclass
+2 
+3 @dataclass
+4 class User:
+5     name: str
+6     email: str
+7 
+8     def __str__(self):
+9         return f"User {self.name} - {self.email}"
+
+File: src/services/__init__.py
+1 # empty file
+
+File: src/services/user_service.py
+1 from src.models.user import User
+2 from src.utils.string_utils import capitalize
+3 
+4 class UserService:
+5     def get_user(self, name: str) -> User:
+6         # Simulate a database query
+7         email = f"{name.lower()}@example.com"
+8         return User(capitalize(name), email)
+
+File: src/utils/__init__.py
+1 # empty file
+
+File: src/utils/string_utils.py
+1 def capitalize(s: str) -> str:
+2     """
+3     Capitalize the first letter of a string
+4     """
+5     return s.capitalize()
+
+File: tests/__init__.py
+1 # empty file
+
+File: tests/test_user_service.py
+1 import pytest
+2 from src.services.user_service import UserService
+3 
+4 def test_get_user():
+5     user_service = UserService()
+6     user = user_service.get_user("John Doe")
+7     assert user.name == "John Doe"
+8     assert user.email == "johndoe@example.com"
+
+```
+
+================================== Ai Message ==================================
+
+Here is the Unix script that installs dependencies and runs the codebase:
+```
+#!/bin/bash
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests in parallel
+pytest tests/ &
+
+# Run main script
+python src/main.py
+```
+Save this script to a file (e.g. `run_codebase.sh`), make it executable with `chmod +x run_codebase.sh`, and then run it with `./run_codebase.sh`.
